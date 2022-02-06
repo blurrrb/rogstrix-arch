@@ -172,8 +172,8 @@ def main():
     exec_arch_chroot(user, [
         f'git config --global user.name "{github_username}"',
         f'git config --global user.email "{github_email}"',
-        f'git clone https://aur.archlinux.org/yay-bin.git /tmp/yay-bin'
-        f'cd /tmp/yay-bin && makepkg -si'
+        f'git clone https://aur.archlinux.org/yay-bin.git /tmp/yay-bin',
+        f'BUILDDIR=/tmp/yay-bin makepkg -si',
         f'yay -S {AURS}'
     ])
 
