@@ -82,7 +82,7 @@ PKGS_EXTRA = [
 ]
 
 PKGS = PKGS_BOOTLOADER + PKGS_INTEL + PKGS_NVIDIA + PKGS_DISPLAY_MANAGER + \
-    PKGS_APPS + PKGS_DEVEL + PKGS_PRINTING + PKGS_VM + PKGS_EXTRA
+    PKGS_APPS + PKGS_DEVEL + PKGS_UTILS + PKGS_PRINTING + PKGS_VM + PKGS_EXTRA
 
 AURS = [
     'epson-inkjet-printer-escpr',
@@ -120,7 +120,7 @@ def main():
 
     github_username = get_input_or_default(
         f'Enter github username:[{DEFAULT_GITHUB_USERNAME}] ', DEFAULT_GITHUB_USERNAME)
-    
+
     github_email = input('Enter github email: ')
 
     shell('fdisk -l')
