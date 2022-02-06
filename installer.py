@@ -105,11 +105,13 @@ def get_input_or_default(message, default):
 
 def exec_arch_chroot(user, commands):
     payload = '\n'.join(commands)
+    shell(f'echo \'{payload}\' | less')
     shell(f'arch-chroot -u {user} /mnt bash -c \'{payload}\'')
 
 
 def exec(commands):
     payload = '\n'.join(commands)
+    shell(f'echo \'{payload}\' | less')
     shell(f'bash -c \'{payload}\'')
 
 
