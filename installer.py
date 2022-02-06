@@ -74,7 +74,6 @@ PKGS_VM = [
     'bridge-utils',
     'openbsd-netcat',
     'edk2-ovmf',
-    'virsh',
     'virt-manager'
 ]
 PKGS_EXTRA = [
