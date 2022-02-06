@@ -104,7 +104,7 @@ def get_input_or_default(message, default):
 
 def exec_arch_chroot(user, commands):
     payload = '\n'.join(commands)
-    shell(f'arch-chroot -u {user} /mnt bash -c \'{payload}\'')
+    shell(f'arch-chroot /mnt su {user} bash -c \'{payload}\'')
 
 
 def exec(commands):
@@ -170,8 +170,8 @@ def main():
     ])
 
     exec_arch_chroot(user, [
-        f'git config --global user.name {github_username}',
-        f'git config --global user.email {github_email}',
+        f'git config --global user.name "{github_username}"',
+        f'git config --global user.email "{github_email}"',
         f'git clone https://aur.archlinux.org/yay-bin.git /tmp/yay-bin'
         f'cd /tmp/yay-bin && makepkg -si'
         f'yay -S {AURS}'
