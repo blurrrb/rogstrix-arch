@@ -104,13 +104,11 @@ def get_input_or_default(message, default):
 
 def exec_arch_chroot(user, commands):
     payload = '\n'.join(commands)
-    shell(f'echo \'{payload}\' | less')
     shell(f'arch-chroot -u {user} /mnt bash -c \'{payload}\'')
 
 
 def exec(commands):
     payload = '\n'.join(commands)
-    shell(f'echo \'{payload}\' | less')
     shell(f'bash -c \'{payload}\'')
 
 
@@ -127,13 +125,15 @@ def main():
 
     shell('fdisk -l')
     drive = get_input_or_default(
-        f'Enter drive: [{DEFAULT_DRIVE}]', DEFAULT_DRIVE)
+        f'Enter drive: [{DEFAULT_DRIVE}] ', DEFAULT_DRIVE)
 
     exec([
         f'systemctl stop reflector',
         f'reflector --save /etc/pacman.d/mirrorlist --country India --protocol https --sort rate',
         f'cat /etc/pacman.d/mirrorlist',
         f'timedatectl set-ntp true',
+        f'umount /mnt/boot',
+        f'umount /mnt',
         f'parted {drive} mklabel gpt',
         f'parted {drive} mkpart "EFI-System-Partition" fat32 1Mib 512Mib set 1 esp on',
         f'parted {drive} mkpart "Linux-Partition" ext4 512MiB 100%',
@@ -157,13 +157,15 @@ def main():
         f'mkinitcpio -P',
         f'grub-install --target=x86_64-efi --efi-directory=/boot/ --bootloader-id=GRUB && grub-mkconfig -o /boot/grub/grub.cfg',
         f'sed -i "s/^#\s*\(%wheel\s*ALL=(ALL)\s*NOPASSWD:\s*ALL\)/\\1/" /etc/sudoers',
-        f'usermod -m -G wheel,libvirt,docker {user}',
+        f'useradd -m {user}',
+        f'usermod -aG wheel,libvirt,docker {user}',
         f'echo "Enter root password:" && passwd',
         f'echo "Enter {user} password:" && passwd {user}',
         f'systemctl enable NetworkManager',
         f'systemctl enable sddm',
         f'systemctl enable libvirtd',
         f'systemctl enable docker',
+        f'systemctl disable reflector',
         f'reflector --save /etc/pacman.d/mirrorlist --country India --protocol https --sort rate'
     ])
 
