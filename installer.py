@@ -139,6 +139,8 @@ def main():
         mkdir /mnt/boot
         mount {drive}1 /mnt/boot''')
 
+    input('debug checkpoint')
+
     shell('pacstrap -i /mnt base linux-lts linux-lts-headers linux-firmware')
     shell('genfstab -U /mnt >> /mnt/etc/fstab')
 
