@@ -146,7 +146,7 @@ def main():
     ])
 
     exec_arch_chroot('root', [
-        f'pacman -S {PKGS}',
+        f'pacman -S {" ".join(PKGS)}',
         f'ln -sf /usr/share/zoneinfo/Asia/Kolkata /etc/localtime',
         f'hwclock --systohc',
         f'echo \'en_US.UTF-8 UTF-8\' > /etc/locale.gen',
@@ -174,7 +174,7 @@ def main():
         f'yay -S {AURS}'
     ])
 
-    shell('umount /mnt/boot && umount /mnt')
+    # shell('umount /mnt/boot && umount /mnt')
 
 
 if __name__ == '__main__':
