@@ -136,6 +136,8 @@ def main():
         f'parted {drive} mklabel gpt',
         f'parted {drive} mkpart "EFI-System-Partition" fat32 1Mib 512Mib set 1 esp on',
         f'parted {drive} mkpart "Linux-Partition" ext4 512MiB 100%',
+        f'mkfs.ext4 ${drive}2',
+        f'mkfs.fat -F 32 ${drive}1',
         f'mount {drive}2 /mnt',
         f'mkdir /mnt/boot',
         f'mount {drive}1 /mnt/boot',
