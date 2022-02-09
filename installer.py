@@ -30,7 +30,7 @@ PKGS = [
     "chromium",
     "vim",
     "dolphin",
-    "konsole",
+    "kitty",
     "spectacle",
     "shotwell",
     "ark",
