@@ -27,6 +27,7 @@ PKGS = [
     "networkmanager",
     # applications
     "firefox",
+    "chromium",
     "vim",
     "dolphin",
     "konsole",
