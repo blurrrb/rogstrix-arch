@@ -1,0 +1,5 @@
+[user]
+	email = GITHUB_EMAIL
+	name = GITHUB_USERNAME
+[core]
+	editor = vim
