@@ -120,7 +120,7 @@ def main():
         f"Enter github email: [{DEFAULT_GITHUB_EMAIL}] ", DEFAULT_GITHUB_EMAIL
     )
 
-    shell("fdisk -l")
+    exec("fdisk -l")
     drive = get_input_or_default(f"Enter drive: [{DEFAULT_DRIVE}] ", DEFAULT_DRIVE)
 
     exec(
@@ -164,22 +164,25 @@ def main():
         f"systemctl enable docker",
         f"systemctl disable reflector",
         f"reflector --save /etc/pacman.d/mirrorlist --country India --protocol https --sort rate",
-        f"cp dotfiles/global/etc/sddm.conf.d/kde_settings.conf  /etc/sddm.conf.d/kde_settings.conf",
+    )
+
+    exec(
+        f"mkdir -p /mnt/etc/sddm.conf.d && cp dotfiles/global/etc/sddm.conf.d/kde_settings.conf  /mnt/etc/sddm.conf.d/kde_settings.conf",
+        f"sed 's/GITHUB_EMAIL/{github_email}/; s/GITHUB_USERNAME/{github_username}/' dotfiles/user/.gitconfig > /mnt/home/{user}/.gitconfig",
+        f"cp dotfiles/user/.zshrc /mnt/home/{user}/.zshrc",
+        f"mkdir -p /mnt/home/{user}/.ssh && cp dotfiles/user/.ssh/config /mnt/home/{user}/.ssh/config",
+        f"mkdir -p /mnt/home/{user}/.config/kitty && cp dotfiles/user/.config/kitty/kitty.conf /mnt/home/{user}/.config/kitty/kitty.conf",
     )
 
     exec_arch_chroot(
         user,
-        f"sed 's/GITHUB_EMAIL/{github_email}/; s/GITHUB_USERNAME/{github_username}/' dotfiles/user/.gitconfig > ~/.gitconfig"
         f"git clone https://aur.archlinux.org/yay-bin.git $HOME/yay-bin",
         f"cd $HOME/yay-bin makepkg -si",
         f"yay -S {AURS}",
         f'sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"',
         f"git clone https://github.com/zsh-users/zsh-autosuggestions ${{ZSH_CUSTOM:-~/.oh-my-zsh/custom}}/plugins/zsh-autosuggestions",
         f"git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${{ZSH_CUSTOM:-~/.oh-my-zsh/custom}}/plugins/zsh-syntax-highlighting",
-        f"cp dotfiles/user/.zshrc ~/.zshrc",
-        f"mkdir -p ~/.ssh && cp dotfiles/user/.ssh/config ~/.ssh/config",
         f'ssh-keygen -t ed25519 -C "{github_email}" && eval "$(ssh-agent -s)" && ssh-add ~/.ssh/id_ed25519',
-        f"mkdir -p ~/.config/kitty && cp dotfiles/user/.config/kitty/kitty.conf ~/.config/kitty/kitty.conf",
     )
 
     if input("Installation complete. reboot? (y/n) [n] ") == "y":
