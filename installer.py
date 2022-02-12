@@ -156,7 +156,7 @@ def main():
         f"echo {hostname} >> /etc/hostname",
         f"mkinitcpio -P",
         f"grub-install --target=x86_64-efi --efi-directory=/boot/ --bootloader-id=GRUB && grub-mkconfig -o /boot/grub/grub.cfg",
-        f'sed -i "s/^#\s*\(%wheel\s*ALL=(ALL)\s*NOPASSWD:\s*ALL\)/\\1/" /etc/sudoers',
+        f'sed -i "s/# %wheel ALL=(ALL:ALL) NOPASSWD: ALL/%wheel ALL=(ALL:ALL) NOPASSWD: ALL/" /etc/sudoers',
         f"useradd -m {user}",
         f"usermod -aG wheel,libvirt,docker {user}",
         f'echo "Enter root password:" && passwd',
