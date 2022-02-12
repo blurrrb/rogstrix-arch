@@ -96,14 +96,12 @@ def get_input_or_default(message, default):
 def exec_arch_chroot(user, *commands):
     payload = "\n".join(commands)
     print(payload)
-    input("continue?")
     shell(f"arch-chroot /mnt su {user} bash -c '{payload}'")
 
 
 def exec(*commands):
     payload = "\n".join(commands)
     print(payload)
-    input("continue?")
     shell(f"bash -c '{payload}'")
 
 
@@ -171,21 +169,16 @@ def main():
 
     exec(
         f"mkdir -p /mnt/etc/sddm.conf.d && cp dotfiles/kde_settings.conf /mnt/etc/sddm.conf.d/kde_settings.conf",
-        "echo done",
         f'sed "s/GITHUB_EMAIL/{github_email}/; s/GITHUB_USERNAME/{github_username}/" dotfiles/.gitconfig > /mnt/home/{user}/.gitconfig',
-        "echo done",
         f"cp dotfiles/.zshrc /mnt/home/{user}/.zshrc",
-        "echo done",
         f"mkdir -p /mnt/home/{user}/.ssh && cp dotfiles/.sshconfig /mnt/home/{user}/.ssh/config",
-        "echo done",
         f"mkdir -p /mnt/home/{user}/.config/kitty && cp dotfiles/kitty.conf /mnt/home/{user}/.config/kitty/kitty.conf",
-        "echo done",
     )
 
     exec_arch_chroot(
         user,
         f"git clone https://aur.archlinux.org/yay-bin.git $HOME/yay-bin",
-        f"cd $HOME/yay-bin makepkg -si",
+        f"cd $HOME/yay-bin && makepkg -si",
         f"yay -S {AURS}",
         f'sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"',
         f"git clone https://github.com/zsh-users/zsh-autosuggestions ${{ZSH_CUSTOM:-~/.oh-my-zsh/custom}}/plugins/zsh-autosuggestions",
