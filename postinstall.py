@@ -15,6 +15,8 @@ def main():
         f"git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${{ZSH_CUSTOM:-~/.oh-my-zsh/custom}}/plugins/zsh-syntax-highlighting",
         f'ssh-keygen -t ed25519 -C "{github_email}" && eval "$(ssh-agent -s)" && ssh-add ~/.ssh/id_ed25519',
         f"rm -rf $HOME/Downloads/yay-bin",
+        f"lookandfeeltool -a org.kde.breezedark.desktop",
+        f"/usr/lib/plasma-changeicons Papirus-Dark",
     )
 
     if input("Installation complete. reboot? (y/n) [n] ") == "y":
