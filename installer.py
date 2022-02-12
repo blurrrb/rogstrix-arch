@@ -95,13 +95,11 @@ def get_input_or_default(message, default):
 
 def exec_arch_chroot(user, *commands):
     payload = "\n".join(commands)
-    print(payload)
     shell(f"arch-chroot /mnt su {user} bash -c '{payload}'")
 
 
 def exec(*commands):
     payload = "\n".join(commands)
-    print(payload)
     shell(f"bash -c '{payload}'")
 
 
@@ -143,8 +141,6 @@ def main():
         f"genfstab -U /mnt >> /mnt/etc/fstab",
     )
 
-    print("phase 1")
-
     exec_arch_chroot(
         "root",
         f'pacman -S {" ".join(PKGS)}',
@@ -176,14 +172,8 @@ def main():
     )
 
     exec_arch_chroot(
-        user,
-        f"git clone https://aur.archlinux.org/yay-bin.git $HOME/yay-bin",
-        f"cd $HOME/yay-bin && makepkg -si",
-        f"yay -S {AURS}",
-        f'sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"',
-        f"git clone https://github.com/zsh-users/zsh-autosuggestions ${{ZSH_CUSTOM:-~/.oh-my-zsh/custom}}/plugins/zsh-autosuggestions",
-        f"git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${{ZSH_CUSTOM:-~/.oh-my-zsh/custom}}/plugins/zsh-syntax-highlighting",
-        f'ssh-keygen -t ed25519 -C "{github_email}" && eval "$(ssh-agent -s)" && ssh-add ~/.ssh/id_ed25519',
+        "root",
+        f"chown -R {user} /home/{user}",
     )
 
     if input("Installation complete. reboot? (y/n) [n] ") == "y":
