@@ -9,12 +9,12 @@ def main():
     exec(
         f"git clone https://aur.archlinux.org/yay-bin.git $HOME/Downloads/yay-bin",
         f"cd $HOME/Downloads/yay-bin && makepkg -si",
-        f"yay -S {AURS}",
+        f"yay -S {' '.join(AURS)}",
         f'sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"',
         f"git clone https://github.com/zsh-users/zsh-autosuggestions ${{ZSH_CUSTOM:-~/.oh-my-zsh/custom}}/plugins/zsh-autosuggestions",
         f"git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${{ZSH_CUSTOM:-~/.oh-my-zsh/custom}}/plugins/zsh-syntax-highlighting",
         f'ssh-keygen -t ed25519 -C "{github_email}" && eval "$(ssh-agent -s)" && ssh-add ~/.ssh/id_ed25519',
-        f"rm -rf $HOME/Downloads/yay-bin"
+        f"rm -rf $HOME/Downloads/yay-bin",
     )
 
     if input("Installation complete. reboot? (y/n) [n] ") == "y":

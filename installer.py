@@ -164,7 +164,7 @@ def main():
     )
 
     exec(
-        f"mkdir -p /mnt/etc/sddm.conf.d && cp dotfiles/kde_settings.conf /mnt/etc/sddm.conf.d/kde_settings.conf",
+        # f"mkdir -p /mnt/etc/sddm.conf.d && cp dotfiles/kde_settings.conf /mnt/etc/sddm.conf.d/kde_settings.conf",
         f'sed "s/GITHUB_EMAIL/{github_email}/; s/GITHUB_USERNAME/{github_username}/" dotfiles/.gitconfig > /mnt/home/{user}/.gitconfig',
         f"cp dotfiles/.zshrc /mnt/home/{user}/.zshrc",
         f"mkdir -p /mnt/home/{user}/.ssh && cp dotfiles/.sshconfig /mnt/home/{user}/.ssh/config",
