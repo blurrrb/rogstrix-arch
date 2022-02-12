@@ -160,7 +160,7 @@ def main():
         f'echo "Enter {user} password:" && passwd {user}',
         f"systemctl enable NetworkManager",
         f"systemctl enable sddm",
-        f"systemctl enable libvirtd",
+        f"systemctl enable libvirtd && virsh net-autostart default",
         f"systemctl enable docker",
         f"systemctl disable reflector",
         f"reflector --save /etc/pacman.d/mirrorlist --country India --protocol https --sort rate",
