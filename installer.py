@@ -145,6 +145,8 @@ def main():
         f"genfstab -U /mnt >> /mnt/etc/fstab",
     )
 
+    print("phase 1")
+
     exec_arch_chroot(
         "root",
         f"echo '{DEFAULT_MIRROR}' > /etc/pacman.d/mirrorlist && cat /etc/pacman.d/mirrorlist",
