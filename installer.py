@@ -8,6 +8,10 @@ DEFAULT_DRIVE = "/dev/sda"
 DEFAULT_GITHUB_USERNAME = "blurrrb"
 DEFAULT_GITHUB_EMAIL = ""
 
+DEFAULT_MIRROR = (
+    "Server = https://mirrors.piconets.webwerks.in/archlinux-mirror/$repo/os/$arch"
+)
+
 # PACKAGES
 PKGS = [
     # bootloader
@@ -125,8 +129,7 @@ def main():
 
     exec(
         f"systemctl stop reflector",
-        f"reflector --save /etc/pacman.d/mirrorlist --country India --protocol https --sort rate",
-        f"cat /etc/pacman.d/mirrorlist",
+        f"echo '{DEFAULT_MIRROR}' > /etc/pacman.d/mirrorlist && cat /etc/pacman.d/mirrorlist",
         f"timedatectl set-ntp true",
         f"umount /mnt/boot",
         f"umount /mnt",
@@ -144,6 +147,7 @@ def main():
 
     exec_arch_chroot(
         "root",
+        f"echo '{DEFAULT_MIRROR}' > /etc/pacman.d/mirrorlist && cat /etc/pacman.d/mirrorlist",
         f'pacman -S {" ".join(PKGS)}',
         f"ln -sf /usr/share/zoneinfo/Asia/Kolkata /etc/localtime",
         f"hwclock --systohc",
@@ -162,20 +166,19 @@ def main():
         f"systemctl enable sddm",
         f"systemctl enable libvirtd && virsh net-autostart default",
         f"systemctl enable docker",
-        f"systemctl disable reflector",
-        f"reflector --save /etc/pacman.d/mirrorlist --country India --protocol https --sort rate",
     )
 
     exec(
-        f"mkdir -p /mnt/etc/sddm.conf.d && cp dotfiles/global/etc/sddm.conf.d/kde_settings.conf /mnt/etc/sddm.conf.d/kde_settings.conf",
+        f"mkdir -p /mnt/etc/sddm.conf.d && cp dotfiles/kde_settings.conf /mnt/etc/sddm.conf.d/kde_settings.conf",
         "echo done",
-        f"sed 's/GITHUB_EMAIL/{github_email}/; s/GITHUB_USERNAME/{github_username}/' dotfiles/user/.gitconfig > /mnt/home/{user}/.gitconfig",
+        f"sed 's/GITHUB_EMAIL/{github_email}/; s/GITHUB_USERNAME/{github_username}/' dotfiles/.gitconfig > /mnt/home/{user}/.gitconfig",
         "echo done",
-        f"cp dotfiles/user/.zshrc /mnt/home/{user}/.zshrc",
+        f"cp dotfiles/.zshrc /mnt/home/{user}/.zshrc",
         "echo done",
-        f"mkdir -p /mnt/home/{user}/.ssh && cp dotfiles/user/.ssh/config /mnt/home/{user}/.ssh/config",
+        f"mkdir -p /mnt/home/{user}/.ssh && cp dotfiles/.sshconfig /mnt/home/{user}/.ssh/config",
         "echo done",
-        f"mkdir -p /mnt/home/{user}/.config/kitty && cp dotfiles/user/.config/kitty/kitty.conf /mnt/home/{user}/.config/kitty/kitty.conf",
+        f"mkdir -p /mnt/home/{user}/.config/kitty && cp dotfiles/kitty.conf /mnt/home/{user}/.config/kitty/kitty.conf",
+        "echo done",
     )
 
     exec_arch_chroot(
