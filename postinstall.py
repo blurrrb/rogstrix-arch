@@ -17,6 +17,7 @@ if __name__ == "__main__":
     )
 
     exec(
+        f"mkdir -p ~/.config/kitty && cp dotfiles/kitty.conf ~/.config/kitty/kitty.conf",
         f'sed "s/GITHUB_EMAIL/{github_email}/; s/GITHUB_USERNAME/{github_username}/" dotfiles/.gitconfig > ~/.gitconfig',
         f"git clone https://aur.archlinux.org/yay-bin.git $HOME/Downloads/yay-bin",
         f"cd $HOME/Downloads/yay-bin && makepkg -si",
@@ -30,7 +31,6 @@ if __name__ == "__main__":
         f"/usr/lib/plasma-changeicons Papirus-Dark",
         f"cp dotfiles/.zshrc ~/.zshrc",
         f"mkdir -p ~/.ssh && cp dotfiles/.sshconfig ~/.ssh/config",
-        f"mkdir -p ~/.config/kitty && cp dotfiles/kitty.conf ~/.config/kitty/kitty.conf",
     )
 
     if input("Installation complete. reboot? (y/n) [n] ") == "y":
