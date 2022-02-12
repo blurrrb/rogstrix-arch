@@ -100,12 +100,14 @@ def get_input_or_default(message, default):
 def exec_arch_chroot(user, *commands):
     payload = "\n".join(commands)
     print(payload)
+    input("continue?")
     shell(f"arch-chroot /mnt su {user} bash -c '{payload}'")
 
 
 def exec(*commands):
     payload = "\n".join(commands)
     print(payload)
+    input("continue?")
     shell(f"bash -c '{payload}'")
 
 
