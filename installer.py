@@ -8,10 +8,6 @@ DEFAULT_DRIVE = "/dev/sda"
 DEFAULT_GITHUB_USERNAME = "blurrrb"
 DEFAULT_GITHUB_EMAIL = ""
 
-DEFAULT_MIRROR = (
-    "Server = https://mirrors.piconets.webwerks.in/archlinux-mirror/$repo/os/$arch"
-)
-
 # PACKAGES
 PKGS = [
     # bootloader
@@ -133,7 +129,7 @@ def main():
 
     exec(
         f"systemctl stop reflector",
-        f"echo '{DEFAULT_MIRROR}' > /etc/pacman.d/mirrorlist && cat /etc/pacman.d/mirrorlist",
+        f"cp dotfiles/mirrorlist /etc/pacman.d/mirrorlist && cat /etc/pacman.d/mirrorlist",
         f"timedatectl set-ntp true",
         f"umount /mnt/boot",
         f"umount /mnt",
@@ -153,7 +149,6 @@ def main():
 
     exec_arch_chroot(
         "root",
-        f"echo '{DEFAULT_MIRROR}' > /etc/pacman.d/mirrorlist && cat /etc/pacman.d/mirrorlist",
         f'pacman -S {" ".join(PKGS)}',
         f"ln -sf /usr/share/zoneinfo/Asia/Kolkata /etc/localtime",
         f"hwclock --systohc",
