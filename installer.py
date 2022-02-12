@@ -143,7 +143,6 @@ def main():
 
     exec_arch_chroot(
         "root",
-        f'pacman -S {" ".join(PKGS)}',
         f"ln -sf /usr/share/zoneinfo/Asia/Kolkata /etc/localtime",
         f"hwclock --systohc",
         f'echo "en_US.UTF-8 UTF-8" > /etc/locale.gen',
@@ -151,6 +150,7 @@ def main():
         f'echo "LANG=en_US.UTF-8" > /etc/locale.conf',
         f"echo {hostname} >> /etc/hostname",
         f"mkinitcpio -P",
+        f'pacman -S {" ".join(PKGS)}',
         f"grub-install --target=x86_64-efi --efi-directory=/boot/ --bootloader-id=GRUB && grub-mkconfig -o /boot/grub/grub.cfg",
         f'sed -i "s/# %wheel ALL=(ALL:ALL) NOPASSWD: ALL/%wheel ALL=(ALL:ALL) NOPASSWD: ALL/" /etc/sudoers',
         f"useradd -m {user}",
