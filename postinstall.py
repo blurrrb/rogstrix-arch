@@ -1,12 +1,23 @@
-from installer import exec, get_input_or_default, DEFAULT_GITHUB_EMAIL, AURS
+from installer import (
+    exec,
+    get_input_or_default,
+    DEFAULT_GITHUB_EMAIL,
+    DEFAULT_GITHUB_USERNAME,
+    AURS,
+)
 
 
-def main():
+if __name__ == "__main__":
+    github_username = get_input_or_default(
+        f"Enter github username: [{DEFAULT_GITHUB_USERNAME}] ", DEFAULT_GITHUB_USERNAME
+    )
 
     github_email = get_input_or_default(
         f"Enter github email: [{DEFAULT_GITHUB_EMAIL}] ", DEFAULT_GITHUB_EMAIL
     )
+
     exec(
+        f'sed "s/GITHUB_EMAIL/{github_email}/; s/GITHUB_USERNAME/{github_username}/" dotfiles/.gitconfig > ~/.gitconfig',
         f"git clone https://aur.archlinux.org/yay-bin.git $HOME/Downloads/yay-bin",
         f"cd $HOME/Downloads/yay-bin && makepkg -si",
         f"yay -S {' '.join(AURS)}",
@@ -17,11 +28,10 @@ def main():
         f"cd ~ && rm -rf $HOME/Downloads/yay-bin",
         f"lookandfeeltool -a org.kde.breezedark.desktop",
         f"/usr/lib/plasma-changeicons Papirus-Dark",
+        f"cp dotfiles/.zshrc ~/.zshrc",
+        f"mkdir -p ~/.ssh && cp dotfiles/.sshconfig ~/.ssh/config",
+        f"mkdir -p ~/.config/kitty && cp dotfiles/kitty.conf ~/.config/kitty/kitty.conf",
     )
 
     if input("Installation complete. reboot? (y/n) [n] ") == "y":
         exec("reboot")
-
-
-if __name__ == "__main__":
-    main()

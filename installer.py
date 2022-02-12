@@ -82,7 +82,6 @@ AURS = [
     "slack-desktop",
     "discord",
     "zoom",
-    "authy",
 ]
 
 # helpers
@@ -103,21 +102,13 @@ def exec(*commands):
     shell(f"bash -c '{payload}'")
 
 
-def main():
+if __name__ == "__main__":
     user = get_input_or_default(
         f"Enter username: [{DEFAULT_USERNAME}] ", DEFAULT_USERNAME
     )
 
     hostname = get_input_or_default(
         f"Enter hostname: [{DEFAULT_HOSTNAME}] ", DEFAULT_HOSTNAME
-    )
-
-    github_username = get_input_or_default(
-        f"Enter github username: [{DEFAULT_GITHUB_USERNAME}] ", DEFAULT_GITHUB_USERNAME
-    )
-
-    github_email = get_input_or_default(
-        f"Enter github email: [{DEFAULT_GITHUB_EMAIL}] ", DEFAULT_GITHUB_EMAIL
     )
 
     exec("fdisk -l")
@@ -164,21 +155,8 @@ def main():
     )
 
     exec(
-        f"mkdir -p /mnt/etc/sddm.conf.d && cp dotfiles/kde_settings.conf /mnt/etc/sddm.conf.d/kde_settings.conf",
-        f'sed "s/GITHUB_EMAIL/{github_email}/; s/GITHUB_USERNAME/{github_username}/" dotfiles/.gitconfig > /mnt/home/{user}/.gitconfig',
-        f"cp dotfiles/.zshrc /mnt/home/{user}/.zshrc",
-        f"mkdir -p /mnt/home/{user}/.ssh && cp dotfiles/.sshconfig /mnt/home/{user}/.ssh/config",
-        f"mkdir -p /mnt/home/{user}/.config/kitty && cp dotfiles/kitty.conf /mnt/home/{user}/.config/kitty/kitty.conf",
-    )
-
-    exec_arch_chroot(
-        "root",
-        f"chown -R {user} /home/{user}",
+        f"mkdir -p /mnt/etc/sddm.conf.d && cp dotfiles/kde_settings.conf /mnt/etc/sddm.conf.d/kde_settings.conf"
     )
 
     if input("Installation complete. reboot? (y/n) [n] ") == "y":
         exec("umount /mnt/boot", "umount /mnt", "reboot")
-
-
-if __name__ == "__main__":
-    main()
