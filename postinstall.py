@@ -31,6 +31,7 @@ if __name__ == "__main__":
         f"lookandfeeltool -a org.kde.breezedark.desktop",
         f"/usr/lib/plasma-changeicons Papirus-Dark",
         f"cp dotfiles/.zshrc ~/.zshrc",
+        f"mkdir -p ~/config/Code/User/ && cp dotfiles/vscode.settings.json ~/config/Code/User/settings.json",
         f"mkdir -p ~/.ssh && cp dotfiles/.sshconfig ~/.ssh/config",
     )
 
