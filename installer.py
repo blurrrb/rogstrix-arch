@@ -70,6 +70,7 @@ PKGS = [
     "openbsd-netcat",
     "edk2-ovmf",
     "virt-manager",
+    "qemu",
     # extras
     "networkmanager-openconnect",
     "stoken",
